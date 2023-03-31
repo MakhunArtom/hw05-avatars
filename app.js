@@ -13,7 +13,7 @@ const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 mongoose
   .connect(process.env.DB_URL)
   .then(con => {
-    console.log('MONGO DB secsessfully conectrd!!!!');
+    console.log('Database connection successful');
   })
   .catch(err => {
     console.log(err);

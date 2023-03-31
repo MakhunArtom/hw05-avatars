@@ -1,7 +1,7 @@
 /**
  * From Contacts
  */
-const { checkReqBody } = require('./contacts/checkReqBody');
+const { checkReqBody, checkExistFavorite } = require('./contacts/checkReqBody');
 const { chexkId } = require('./contacts/chexkId');
 const { createContactValidator } = require('./contacts/createContactValidator');
 const { updeteContactValidator } = require('./contacts/updetContactValidator');
@@ -11,4 +11,5 @@ module.exports = {
   chexkId,
   createContactValidator,
   updeteContactValidator,
+  checkExistFavorite,
 };

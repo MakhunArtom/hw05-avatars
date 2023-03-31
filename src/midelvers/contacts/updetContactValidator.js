@@ -15,7 +15,7 @@ const updeteContactValidator = (req, res, next) => {
       })
       .optional(),
 
-    phone: Joi.number().optional(),
+    phone: Joi.string().optional(),
   });
 
   const validationsResult = schema.validate(req.body);

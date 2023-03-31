@@ -3,33 +3,21 @@ const mongoose = require('mongoose');
 const contactSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, 'Set name for contact'],
   },
-
   email: {
     type: String,
-    unique: true,
-    required: true,
   },
-
   phone: {
-    type: Number,
-    required: true,
+    type: String,
   },
-
-  // password: {
-  //   type: String,
-  //   // required: true,
-  // },
-
-  // role: {
-  //   type: String,
-  //   required: true,
-  //   default: 'user',
-  // },
+  favorite: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-const User = mongoose.model('User', contactSchema);
+const User = mongoose.model('contacts', contactSchema);
 
 module.exports = {
   User,

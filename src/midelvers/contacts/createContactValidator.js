@@ -15,7 +15,7 @@ const createContactValidator = (req, res, next) => {
       })
       .required(),
 
-    phone: Joi.number().required(),
+    phone: Joi.string().required(),
   });
 
   const validationsResult = schema.validate(req.body);

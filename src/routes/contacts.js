@@ -1,6 +1,7 @@
 const { Router } = require('express');
 
 const {
+  checkExistFavorite,
   checkReqBody,
   chexkId,
   createContactValidator,
@@ -13,13 +14,12 @@ const {
   createControler,
   deleteControler,
   updeteControler,
+  updateStatusContact,
 } = require('../controlers/contact');
 
 const router = Router();
 
 router.route('/').get(getControler).post(checkReqBody, createContactValidator, createControler);
-// router.get('/', getControler);
-// router.post('/', checkReqBody, createContactValidator, createControler);
 
 router.use('/:contactId', chexkId);
 router
@@ -27,9 +27,6 @@ router
   .get(getByIdControler)
   .delete(deleteControler)
   .put(checkReqBody, updeteContactValidator, updeteControler);
-
-// router.get('/:contactId', getByIdControler);
-// router.delete('/:contactId', deleteControler);
-// router.put('/:contactId', checkReqBody, updeteContactValidator, updeteControler);
+router.route('/:contactId/favorite').patch(checkExistFavorite, updateStatusContact);
 
 module.exports = router;

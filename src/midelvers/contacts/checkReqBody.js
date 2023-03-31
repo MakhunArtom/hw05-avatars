@@ -11,6 +11,18 @@ const checkReqBody = (req, res, next) => {
   next();
 };
 
+/**
+ *  Checking exist favorite
+ */
+const checkExistFavorite = (req, res, next) => {
+  const { favorite } = req.body;
+
+  if (favorite === undefined) return next(new AppError(400, 'missing field favorite'));
+
+  next();
+};
+
 module.exports = {
   checkReqBody,
+  checkExistFavorite,
 };
