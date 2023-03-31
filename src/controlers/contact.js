@@ -1,117 +1,89 @@
-const {
-  listContacts,
-  getContactById,
-  removeContact,
-  addContact,
-  updateContact,
-} = require("../../models/contacts");
+const { catchWraper } = require('../utils/index');
 
-const getControler = async (req, res, next) => {
-  try {
-    const contacts = await listContacts();
+const { User } = require('../models/contactModel');
 
-    res.json({
-      status: "success",
-      code: 200,
-      data: {
-        contacts,
-      },
-    });
-  } catch (err) {
-    res.json({
-      message: "Not found",
-      code: 404,
-    });
-  }
-};
+/**
+ * Get contacts
+ */
+const getControler = catchWraper(async (req, res) => {
+  const contacts = await User.find({}).select('-__v');
 
-const getByIdControler = async (req, res, next) => {
+  res.json({
+    status: 'success',
+    code: 200,
+    data: {
+      contacts,
+    },
+  });
+});
+
+/**
+ * Get contact by ID
+ */
+const getByIdControler = catchWraper(async (req, res, next) => {
   const { contactId } = req.params;
 
-  try {
-    const [contact] = await getContactById(contactId);
+  const contact = await User.findById(contactId).select('-__v');
 
-    if (!contact) {
-      throw "";
-    }
+  res.json({
+    status: 'success',
+    code: 200,
+    data: {
+      contact,
+    },
+  });
+});
 
-    res.json({
-      status: "success",
-      code: 200,
-      data: {
-        contact,
-      },
-    });
-  } catch (error) {
-    res.json({
-      message: "Not found",
-      code: 404,
-    });
-  }
-};
+/**
+ * Create contact
+ */
+const createControler = catchWraper(async (req, res) => {
+  const newContact = await User.create(req.body).select('-__v');
 
-const postControler = async (req, res, next) => {
-  try {
-    const contact = await addContact(req.body);
+  res.status(201).json({
+    status: 'created',
+    data: { newContact },
+  });
+});
 
-    res.json({
-      status: "created",
-      code: 201,
-      data: { contact },
-    });
-  } catch (error) {
-    res.status(400).json({ message: `missing required ${error} field` });
-  }
-};
-
-const deletControler = async (req, res, next) => {
+/**
+ * Delete contact
+ */
+const deleteControler = catchWraper(async (req, res, next) => {
   const { contactId } = req.params;
 
-  try {
-    const contacts = await removeContact(contactId);
+  await User.findByIdAndDelete(contactId);
 
-    if (contacts === undefined) {
-      throw "";
-    }
+  res.json({
+    masege: 'contact deleted',
+    code: 200,
+  });
+});
 
-    res.json({
-      masege: "contact deleted",
-      code: 200,
-    });
-  } catch (error) {
-    res.json({
-      message: "Not found",
-      code: 404,
-    });
-  }
-};
-
-const putControler = async (req, res, next) => {
+/**
+ * Updete contact
+ */
+const updeteControler = catchWraper(async (req, res, next) => {
   const { contactId } = req.params;
-  const body = req.body;
+  const { email, name, phone } = req.body;
 
-  try {
-    const arr = Object.keys(req.body);
-    if (arr.length === 0) {
-      return res.status(400).json({ message: "missing fields" });
-    }
+  const newContact = await User.findOneAndUpdate(
+    contactId,
+    {
+      name,
+      phone,
+      email,
+    },
+    { new: true }
+  ).select('-__v');
 
-    const newContact = await updateContact(contactId, body);
-
-    if (newContact === undefined) {
-      throw "";
-    }
-
-    res.status(200).json({ message: newContact });
-  } catch (error) {
-    res.status(404).json({ message: "Not found" });
-  }
-};
+  res.status(200).json({ message: newContact });
+});
 
 module.exports = {
   getControler,
   getByIdControler,
-  postControler,
-  deletControler,
-  putControler,
+  createControler,
+  deleteControler,
+  updeteControler,
 };
