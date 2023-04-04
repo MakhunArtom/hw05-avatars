@@ -8,6 +8,8 @@ const {
   updeteContactValidator,
 } = require('../midelvers/index');
 
+const { apiContacts } = require('../controlers/index');
+
 const {
   getControler,
   getByIdControler,
@@ -15,7 +17,7 @@ const {
   deleteControler,
   updeteControler,
   updateStatusContact,
-} = require('../controlers/contact');
+} = apiContacts;
 
 const router = Router();
 
@@ -27,6 +29,7 @@ router
   .get(getByIdControler)
   .delete(deleteControler)
   .put(checkReqBody, updeteContactValidator, updeteControler);
+
 router.route('/:contactId/favorite').patch(checkExistFavorite, updateStatusContact);
 
 module.exports = router;
