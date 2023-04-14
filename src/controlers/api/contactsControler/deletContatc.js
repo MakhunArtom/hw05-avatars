@@ -1,14 +1,14 @@
 const { catchWraper } = require('../../../utils/index');
-
-const { User } = require('../../../models/contactModel');
+const { Contact } = require('../../../models/index');
 
 /**
  * Delete contact
  */
 const deleteControler = catchWraper(async (req, res, next) => {
-  const { contactId } = req.params;
+  const { contactId: _id } = req.params;
+  const { id: owner } = req.user;
 
-  await User.findByIdAndDelete(contactId);
+  await Contact.findOneAndDelete({ _id, owner });
 
   res.json({
     masege: 'contact deleted',

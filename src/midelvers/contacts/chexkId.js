@@ -1,5 +1,5 @@
 const { AppError, catchWraper } = require('../../utils/index');
-const { User } = require('../../models/contactModel');
+const { Contact } = require('../../models/index');
 const { Types } = require('mongoose');
 
 /**
@@ -12,7 +12,7 @@ const chexkId = catchWraper(async (req, res, next) => {
 
   if (!idIsValid) return next(new AppError(404, 'Contact not exsist'));
 
-  const idExists = await User.exists({ _id: contactId });
+  const idExists = await Contact.exists({ _id: contactId });
 
   if (!idExists) return next(new AppError(404, 'Contact not exsist'));
   next();

@@ -1,14 +1,17 @@
 const { Router } = require('express');
 
+const { contactsMidelwer, authMidelwer } = require('../midelvers/index');
+const { contactsControlers } = require('../controlers/index');
+
+const { authDecodedMidelwer } = authMidelwer;
+
 const {
   checkExistFavorite,
   checkReqBody,
   chexkId,
   createContactValidator,
   updeteContactValidator,
-} = require('../midelvers/index');
-
-const { apiContacts } = require('../controlers/index');
+} = contactsMidelwer;
 
 const {
   getControler,
@@ -17,19 +20,22 @@ const {
   deleteControler,
   updeteControler,
   updateStatusContact,
-} = apiContacts;
+} = contactsControlers;
 
 const router = Router();
 
-router.route('/').get(getControler).post(checkReqBody, createContactValidator, createControler);
+router.use(authDecodedMidelwer);
+
+router.get('/', getControler);
+router.post('/', checkReqBody, createContactValidator, createControler);
 
 router.use('/:contactId', chexkId);
-router
-  .route('/:contactId')
-  .get(getByIdControler)
-  .delete(deleteControler)
-  .put(checkReqBody, updeteContactValidator, updeteControler);
+router.get('/:contactId', getByIdControler);
+router.delete('/:contactId', deleteControler);
+router.put('/:contactId', checkReqBody, updeteContactValidator, updeteControler);
 
-router.route('/:contactId/favorite').patch(checkExistFavorite, updateStatusContact);
+router.patch('/:contactId/favorite', checkExistFavorite, updateStatusContact);
 
-module.exports = router;
+module.exports = {
+  contactsRouter: router,
+};

@@ -1,13 +1,14 @@
 const { catchWraper } = require('../../../utils/index');
+const { Contact } = require('../../../models/index');
 
-const { User } = require('../../../models/contactModel');
 /**
  * Get contact by ID
  */
 const getByIdControler = catchWraper(async (req, res, next) => {
-  const { contactId } = req.params;
+  const { contactId: _id } = req.params;
+  const { id: owner } = req.user;
 
-  const contact = await User.findById(contactId).select('-__v');
+  const contact = await Contact.findOne({ owner, _id });
 
   res.json({
     status: 'success',

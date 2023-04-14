@@ -1,15 +1,14 @@
 /**
  * From Contacts
  */
-const { checkReqBody, checkExistFavorite } = require('./contacts/checkReqBody');
-const { chexkId } = require('./contacts/chexkId');
-const { createContactValidator } = require('./contacts/createContactValidator');
-const { updeteContactValidator } = require('./contacts/updetContactValidator');
+const contactsMidelwer = require('./contacts/index');
+
+/**
+ * From authMidelwer
+ */
+const authMidelwer = require('./authMidelwer/index');
 
 module.exports = {
-  checkReqBody,
-  chexkId,
-  createContactValidator,
-  updeteContactValidator,
-  checkExistFavorite,
+  contactsMidelwer,
+  authMidelwer,
 };

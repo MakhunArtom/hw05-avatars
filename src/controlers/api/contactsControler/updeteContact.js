@@ -1,16 +1,16 @@
 const { catchWraper } = require('../../../utils/index');
-
-const { User } = require('../../../models/contactModel');
+const { Contact } = require('../../../models/index');
 
 /**
  * Updete contact
  */
 const updeteControler = catchWraper(async (req, res, next) => {
-  const { contactId } = req.params;
+  const { contactId: _id } = req.params;
+  const { id: owner } = req.user;
   const { email, name, phone } = req.body;
 
-  const newContact = await User.findOneAndUpdate(
-    contactId,
+  const newContact = await Contact.findOneAndUpdate(
+    { _id, owner },
     {
       name,
       phone,

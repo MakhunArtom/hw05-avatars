@@ -1,8 +1,10 @@
 /**
  * Controlers from api
  */
-const { apiContacts } = require('./api/index');
+const contactsControlers = require('./api/contactsControler/index');
+const authControlers = require('./api/authControler/index');
 
 module.exports = {
-  apiContacts,
+  contactsControlers,
+  authControlers,
 };
