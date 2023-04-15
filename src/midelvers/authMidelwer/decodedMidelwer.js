@@ -12,7 +12,7 @@ const authDecodedMidelwer = async (req, res, next) => {
 
   const [tokenType, token] = headerAuthoriz.split(' ');
 
-  if (!token) return next(new AppError(401, 'Not authorized'));
+  if (!token || tokenType !== 'Bearer') return next(new AppError(401, 'Not authorized'));
 
   try {
     const { id } = jwt.decode(token, process.env.JWT_SECRET);
@@ -20,7 +20,6 @@ const authDecodedMidelwer = async (req, res, next) => {
 
     if (!user || !user.token) return next(new AppError(401, 'Not authorized'));
 
-    req.token = token;
     req.user = user;
 
     next();
